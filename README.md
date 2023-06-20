@@ -25,6 +25,7 @@ Figura 3: Multiplicação da matriz
 # Gravação da entrega do projeto<br>
 
 ## Link para ver no youtube
+https://youtu.be/S4p5yuNjf5s
 
 ### Pré-requisitos
 > pip install numpy
