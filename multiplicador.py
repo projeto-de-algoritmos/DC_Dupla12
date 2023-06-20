@@ -1,104 +1,195 @@
 import numpy as np
-from tkinter import *
-from tkinter import simpledialog, messagebox
+import tkinter as tk
+import tkinter.messagebox as tkmsg
+from tkinter import ttk, messagebox
 
-def dividir(matriz):
-    linha, coluna = matriz.shape
-    linha2, coluna2 = linha//2, coluna//2
-    return matriz[:linha2, :coluna2], matriz[:linha2, coluna2:], matriz[linha2:, :coluna2], matriz[linha2:, coluna2:]
 
-def adicionar(matriz1, matriz2):
-    return np.add(matriz1, matriz2)
+def strassen_multiply(A, B):
+    n = A.shape[0]
+    
+    if n == 1:
+        return A * B
+    
+    mid = n // 2
+    A11 = A[:mid, :mid]
+    A12 = A[:mid, mid:]
+    A21 = A[mid:, :mid]
+    A22 = A[mid:, mid:]
+    B11 = B[:mid, :mid]
+    B12 = B[:mid, mid:]
+    B21 = B[mid:, :mid]
+    B22 = B[mid:, mid:]
+    
+    P1 = strassen_multiply(A11 + A22, B11 + B22)
+    P2 = strassen_multiply(A21 + A22, B11)
+    P3 = strassen_multiply(A11, B12 - B22)
+    P4 = strassen_multiply(A22, B21 - B11)
+    P5 = strassen_multiply(A11 + A12, B22)
+    P6 = strassen_multiply(A21 - A11, B11 + B12)
+    P7 = strassen_multiply(A12 - A22, B21 + B22)
+    
+    C11 = P1 + P4 - P5 + P7
+    C12 = P3 + P5
+    C21 = P2 + P4
+    C22 = P1 - P2 + P3 + P6
+    
+    C = np.vstack((np.hstack((C11, C12)), np.hstack((C21, C22))))
+    
+    return C
 
-def subtrair(matriz1, matriz2):
-    return np.subtract(matriz1, matriz2)
+def is_power_of_two(n):
+    return (n & (n - 1) == 0) and n != 0
 
-def strassen(matriz1, matriz2):
-    if len(matriz1) == 1:
-        return matriz1 * matriz2
+def validate_size():
+    m = m_entry.get()
+    n = n_entry.get()
+    p = p_entry.get()
 
-    a, b, c, d = dividir(matriz1)
-    e, f, g, h = dividir(matriz2)
+    if not m.isdigit() or not n.isdigit() or not p.isdigit():
+        tkmsg.showerror("Error", "Os tamanhos das matrizes devem ser números inteiros.")
+        return False
 
-    p1 = strassen(a, subtrair(f, h))
-    p2 = strassen(adicionar(a, b), h)
-    p3 = strassen(adicionar(c, d), e)
-    p4 = strassen(d, subtrair(g, e))
-    p5 = strassen(adicionar(a, d), adicionar(e, h))
-    p6 = strassen(subtrair(b, d), adicionar(g, h))
-    p7 = strassen(subtrair(a, c), adicionar(e, f))
+    m = int(m)
+    n = int(n)
+    p = int(p)
 
-    c11 = adicionar(subtrair(adicionar(p5, p4), p2), p6)
-    c12 = adicionar(p1, p2)
-    c21 = adicionar(p3, p4)
-    c22 = subtrair(subtrair(adicionar(p1, p5), p3), p7)
+    if not is_power_of_two(m) or not is_power_of_two(n) or not is_power_of_two(p):
+        tkmsg.showerror("Error", "Os tamanhos das matrizes devem ser potências de 2.")
+        return False
 
-    c = np.vstack((np.hstack((c11, c12)), np.hstack((c21, c22))))
+    return True
 
-    return c
 
-def obter_entrada_matriz(titulo):
-    root = Tk()
-    root.withdraw()
-    while True:
-        linhas = simpledialog.askstring(titulo, "Digite o número de linhas (deve ser uma potência de 2)")
-        if linhas is None:
-            root.destroy()
-            return None
+def validate_entries():
+    m = int(m_entry.get())
+    n = int(n_entry.get())
+    p = int(p_entry.get())
 
-        try:
-            linhas = int(linhas)
-            if not (linhas & (linhas-1) == 0) and linhas != 0:
-                raise ValueError
-        except ValueError:
-            messagebox.showerror("Erro", "O número de linhas deve ser uma potência de 2")
-            continue
+    for i in range(m):
+        for j in range(n):
+            if not matrix_A_entries[i][j].get().isdigit():
+                messagebox.showerror("Erro", "Todos os campos da Matriz A devem conter apenas números inteiros!")
+                return False
 
-        matriz = []
-        for i in range(linhas):
-            while True:
-                linha = simpledialog.askstring(titulo, f"Digite os valores da linha {i+1} separados por vírgulas")
-                if linha is None:
-                    root.destroy()
-                    return None
+    for i in range(n):
+        for j in range(p):
+            if not matrix_B_entries[i][j].get().isdigit():
+                messagebox.showerror("Erro", "Todos os campos da Matriz B devem conter apenas números inteiros!")
+                return False
 
-                try:
-                    linha = list(map(int, linha.split(",")))
-                    if len(linha) != linhas:
-                        raise ValueError
-                except ValueError:
-                    messagebox.showerror("Erro", "Valores de linha inválidos")
-                    continue
+    return True
 
-                matriz.append(linha)
-                break
 
-        root.destroy()
-        return np.array(matriz)
-
-def multiplicar_matrizes():
-    matriz1 = obter_entrada_matriz("Matriz 1")
-    if matriz1 is None:
+def multiply_matrices():
+    if not validate_entries():
         return
 
-    matriz2 = obter_entrada_matriz("Matriz 2")
-    if matriz2 is None:
+    m = int(m_entry.get())
+    n = int(n_entry.get())
+    p = int(p_entry.get())
+
+    matrix_A = np.zeros((m, n))
+    matrix_B = np.zeros((n, p))
+
+    for i in range(m):
+        for j in range(n):
+            matrix_A[i, j] = int(matrix_A_entries[i][j].get())
+
+    for i in range(n):
+        for j in range(p):
+            matrix_B[i, j] = int(matrix_B_entries[i][j].get())
+
+    result_matrix = strassen_multiply(matrix_A, matrix_B)
+
+    
+    frame_result = ttk.Frame(root)
+    frame_result.grid(row=2, column=2, sticky="nsew")
+
+    result_entries = create_matrix_entries(frame_result, m, p)
+
+    for i in range(m):
+        for j in range(p):
+            result_entries[i][j].insert(0, str(result_matrix[i, j]))
+
+
+
+def create_matrix_entries(root, rows, columns):
+    frame = ttk.Frame(root)
+    frame.grid(row=2, column=0, sticky="nsew")
+
+    canvas = tk.Canvas(frame)
+    canvas.grid(row=0, column=0, sticky="nsew")
+
+    scrollbar_x = ttk.Scrollbar(frame, orient="horizontal", command=canvas.xview)
+    scrollbar_x.grid(row=1, column=0, sticky="ew")
+
+    scrollbar_y = ttk.Scrollbar(frame, orient="vertical", command=canvas.yview)
+    scrollbar_y.grid(row=0, column=1, sticky="ns")
+
+    canvas.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
+
+    entry_frame = ttk.Frame(canvas)
+    canvas.create_window((0, 0), window=entry_frame, anchor="nw")
+
+    entries = []
+    for i in range(rows):
+        row_entries = []
+        for j in range(columns):
+            entry = ttk.Entry(entry_frame, width=5)
+            entry.grid(row=i, column=j, padx=3, pady=3)
+            row_entries.append(entry)
+        entries.append(row_entries)
+
+    entry_frame.update_idletasks()
+    canvas.configure(scrollregion=canvas.bbox("all"))
+
+    return entries
+
+def create_matrices():
+    if not validate_size():
         return
 
-    if matriz1.shape != matriz2.shape:
-        messagebox.showerror("Erro", "As duas matrizes devem ter o mesmo formato")
-        return
+    m = int(m_entry.get())
+    n = int(n_entry.get())
+    p = int(p_entry.get())
+    
+    global matrix_A_entries, matrix_B_entries
 
-    resultado = strassen(matriz1, matriz2)
-    messagebox.showinfo("Resultado", str(resultado))
+    frame_A = ttk.Frame(root)
+    frame_A.grid(row=2, column=0, sticky="nsew")
 
-root = Tk()
-root.title("Calculadora de Matrizes")
-root.geometry('300x100')
+    frame_B = ttk.Frame(root)
+    frame_B.grid(row=2, column=1, sticky="nsew")
 
-Label(root, text="Calculadora de Matrizes utilizando o método de Strassen").pack()
+    matrix_A_entries = create_matrix_entries(frame_A, m, n)
+    matrix_B_entries = create_matrix_entries(frame_B, n, p)
+    
+    create_button.config(state="disabled")
+    multiply_button.config(state="normal")
 
-botao_multiplicar = Button(root, text="Multiplicar matrizes", command=multiplicar_matrizes)
-botao_multiplicar.pack()
+
+
+root = tk.Tk()
+
+m_label = tk.Label(root, text="m:")
+m_label.grid(row=0, column=0)
+m_entry = tk.Entry(root, width=5)
+m_entry.grid(row=0, column=1)
+
+n_label = tk.Label(root, text="n:")
+n_label.grid(row=0, column=2)
+n_entry = tk.Entry(root, width=5)
+n_entry.grid(row=0, column=3)
+
+p_label = tk.Label(root, text="p:")
+p_label.grid(row=0, column=4)
+p_entry = tk.Entry(root, width=5)
+p_entry.grid(row=0, column=5)
+
+create_button = tk.Button(root, text="Criar Matrizes", command=lambda: create_matrices())
+create_button.grid(row=1, column=2)
+
+multiply_button = tk.Button(root, text="Multiplicar", command=multiply_matrices)
+multiply_button.grid(row=1, column=3)
 
 root.mainloop()
