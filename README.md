@@ -1,45 +1,34 @@
-**!! Atenção: Renomeie o seu repositório para (Tema)_(NomeDoProjeto). !!** 
+# Multiplicação de Matrizes
 
-Temas:
- - Grafos1
- - Grafos2
- - PD
- - D&C
- - Greed
- - Final 
- 
- **!! *Não coloque os nomes dos alunos no título do repositório*. Exemplo de título correto: Grafos2_Labirinto-do-Minotauro !!**
- 
- (Apague essa seção)
-
-# NomedoProjeto
-
-**Número da Lista**: X<br>
-**Conteúdo da Disciplina**: XXXXXXXXXX<br>
+**Número da Lista**: 4<br>
+**Conteúdo da Disciplina**: Dividir e Conquistar<br>
 
 ## Alunos
 |Matrícula | Aluno |
 | -- | -- |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
+| 19/0088257  |  Guilherme Kishimoto |
+| 19/0088745  |  Iago Cabral |
 
 ## Sobre 
-Descreva os objetivos do seu projeto e como ele funciona. 
+Este projeto tem como objetivo ilustrar a aplicação do algoritmo de Strassen, uma técnica de divisão e conquista, para multiplicação de matrizes. A interface gráfica, construída em Tkinter, permite ao usuário fornecer duas matrizes de qualquer dimensão, desde que compatíveis para a multiplicação (potências de 2 e uma matriz quadrática (mesmo número de linhas e coluna)), e visualizar o resultado da multiplicação dessas matrizes.
 
 ## Screenshots
-Adicione 3 ou mais screenshots do projeto em funcionamento.
-
+![Pacma](https://cdn.discordapp.com/attachments/869268773130092544/1120844769506111538/Captura_de_Tela_2023-06-20_as_19.30.31.png)<br><br>
+Figura 1: Escolher tamanho da matriz<br><br>
+![Computador](https://cdn.discordapp.com/attachments/869268773130092544/1120844769946501161/Captura_de_Tela_2023-06-20_as_19.32.33.png)<br><br>
+Figura 2: Matriz criada<br><br>
+![Terminal](https://cdn.discordapp.com/attachments/869268773130092544/1120844770231730327/Captura_de_Tela_2023-06-20_as_19.35.37.png)<br><br>
+Figura 3: Multiplicação da matriz
 ## Instalação 
-**Linguagem**: xxxxxx<br>
-**Framework**: (caso exista)<br>
-Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
+**Linguagem**: Python<br>
 
-## Uso 
-Explique como usar seu projeto caso haja algum passo a passo após o comando de execução.
+# Gravação da entrega do projeto<br>
 
-## Outros 
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
+## Link para ver no youtube
 
+### Pré-requisitos
+> pip install numpy
 
-
+## Uso
+Após a execução do comando, uma janela da interface gráfica será aberta. Digite as dimensões das matrizes que você deseja multiplicar nos campos de entrada correspondentes e pressione o botão "Criar Matrizes". Em seguida, preencha os campos das matrizes que serão exibidos. Para multiplicar as matrizes, pressione o botão "Multiplicar". A matriz resultante será exibida abaixo das matrizes de entrada.
 
