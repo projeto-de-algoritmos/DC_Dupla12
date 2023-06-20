@@ -42,8 +42,8 @@ def is_power_of_two(n):
 
 def validate_size():
     m = m_entry.get()
-    n = n_entry.get()
-    p = p_entry.get()
+    n = m_entry.get()
+    p = m_entry.get()
 
     if not m.isdigit() or not n.isdigit() or not p.isdigit():
         tkmsg.showerror("Error", "Os tamanhos das matrizes devem ser números inteiros.")
@@ -62,8 +62,8 @@ def validate_size():
 
 def validate_entries():
     m = int(m_entry.get())
-    n = int(n_entry.get())
-    p = int(p_entry.get())
+    n = int(m_entry.get())
+    p = int(m_entry.get())
 
     for i in range(m):
         for j in range(n):
@@ -85,8 +85,8 @@ def multiply_matrices():
         return
 
     m = int(m_entry.get())
-    n = int(n_entry.get())
-    p = int(p_entry.get())
+    n = int(m_entry.get())
+    p = int(m_entry.get())
 
     matrix_A = np.zeros((m, n))
     matrix_B = np.zeros((n, p))
@@ -150,8 +150,8 @@ def create_matrices():
         return
 
     m = int(m_entry.get())
-    n = int(n_entry.get())
-    p = int(p_entry.get())
+    n = int(m_entry.get())
+    p = int(m_entry.get())
     
     global matrix_A_entries, matrix_B_entries
 
@@ -167,31 +167,17 @@ def create_matrices():
     create_button.config(state="disabled")
     multiply_button.config(state="normal")
 
-
-
 root = tk.Tk()
-# text_label = tk.Label(root, text="Nº Linhas matriz 1sfdgssfgjsgjsjg:")
-# text_label.grid(row=0, column=0)
+root.title("Multiplicação de Matrizes")
 
 size_frame = tk.Frame(root)
 size_frame.grid(row=0, column=0, sticky="w", padx=5, pady=5)
 
-m_label = tk.Label(size_frame, text="Nº Linhas matriz 1:")
+m_label = tk.Label(size_frame, text="Tamanho da matriz(tem que ser potencia de 2):")
 m_label.grid(row=0, column=0)
 m_entry = tk.Entry(size_frame, width=5)
 m_entry.grid(row=0, column=1, padx=(0, 20))
 
-n_label = tk.Label(size_frame, text="Nº Colunas matriz 1:")
-n_label.grid(row=0, column=2)
-n_entry = tk.Entry(size_frame, width=5)
-n_entry.grid(row=0, column=3, padx=(0, 20))
-
-p_label = tk.Label(size_frame, text="Nº Linhas matriz 2:")
-p_label.grid(row=0, column=4)
-p_entry = tk.Entry(size_frame, width=5)
-p_entry.grid(row=0, column=5)
-
-# Botão para criar as matrizes e multiplicar
 button_frame = tk.Frame(root)
 button_frame.grid(row=1, column=0, sticky="w", padx=5, pady=5)
 
@@ -200,7 +186,6 @@ create_button.grid(row=0, column=0)
 
 multiply_button = tk.Button(button_frame, text="Multiplicar", command=multiply_matrices)
 multiply_button.grid(row=0, column=1, padx=(20, 0))
-
 
 root.mainloop()
 
