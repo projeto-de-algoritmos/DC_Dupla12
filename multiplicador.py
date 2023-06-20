@@ -170,26 +170,37 @@ def create_matrices():
 
 
 root = tk.Tk()
+# text_label = tk.Label(root, text="Nº Linhas matriz 1sfdgssfgjsgjsjg:")
+# text_label.grid(row=0, column=0)
 
-m_label = tk.Label(root, text="m:")
+size_frame = tk.Frame(root)
+size_frame.grid(row=0, column=0, sticky="w", padx=5, pady=5)
+
+m_label = tk.Label(size_frame, text="Nº Linhas matriz 1:")
 m_label.grid(row=0, column=0)
-m_entry = tk.Entry(root, width=5)
-m_entry.grid(row=0, column=1)
+m_entry = tk.Entry(size_frame, width=5)
+m_entry.grid(row=0, column=1, padx=(0, 20))
 
-n_label = tk.Label(root, text="n:")
+n_label = tk.Label(size_frame, text="Nº Colunas matriz 1:")
 n_label.grid(row=0, column=2)
-n_entry = tk.Entry(root, width=5)
-n_entry.grid(row=0, column=3)
+n_entry = tk.Entry(size_frame, width=5)
+n_entry.grid(row=0, column=3, padx=(0, 20))
 
-p_label = tk.Label(root, text="p:")
+p_label = tk.Label(size_frame, text="Nº Linhas matriz 2:")
 p_label.grid(row=0, column=4)
-p_entry = tk.Entry(root, width=5)
+p_entry = tk.Entry(size_frame, width=5)
 p_entry.grid(row=0, column=5)
 
-create_button = tk.Button(root, text="Criar Matrizes", command=lambda: create_matrices())
-create_button.grid(row=1, column=2)
+# Botão para criar as matrizes e multiplicar
+button_frame = tk.Frame(root)
+button_frame.grid(row=1, column=0, sticky="w", padx=5, pady=5)
 
-multiply_button = tk.Button(root, text="Multiplicar", command=multiply_matrices)
-multiply_button.grid(row=1, column=3)
+create_button = tk.Button(button_frame, text="Criar Matrizes", command=lambda: create_matrices())
+create_button.grid(row=0, column=0)
+
+multiply_button = tk.Button(button_frame, text="Multiplicar", command=multiply_matrices)
+multiply_button.grid(row=0, column=1, padx=(20, 0))
+
 
 root.mainloop()
+
